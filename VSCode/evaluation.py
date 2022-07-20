@@ -9,13 +9,16 @@ from sklearn import linear_model
 import statistics
 from get_angle_range import get_angle_range
 
+#hier angeben von welchem Fehler die Ergebnisse geplottet werden sollen
 defect_key = "7_SEP_delta102_x100"
+#hier angeben wo sich die ergebniss json files befinden
 result_json_files = ('C:/Users/jheys/Documents/01_BA/VSCode/json_files/')
 
 
 
-# ---------------plot domelight influence------------------------------
-def influence_of_domelight(result_json_files,defect_key):
+# ---------------plot results------------------------------
+#plotten der Ergebnisse In 3D und 2D Plots. 
+def plot_results(result_json_files,defect_key):
   i = 0
   theta_with_do = []
   du_with_do = []
@@ -435,5 +438,5 @@ def multiple_regression(result_json_files, defect_key):
 #multiple_regression(result_json_files,defect_key)
 #plot_3D_all_angles(result_json_files,defect_key)
 #plot_3D_visible_angles(result_json_files,defect_key)
-influence_of_domelight(result_json_files,defect_key)
+plot_results(result_json_files,defect_key)
 #statistic(result_json_files,defect_key)

@@ -17,11 +17,11 @@ there will be big differences between grayvalues
 
 def calc_histogram_range(img,mask,result_dictionary):
   
-  #   maskiern des Bilds 
+  #   maskieren des Bildes 
     masked_img= maskimage(img,mask)
   
 
-  # calculation of the variance
+  # berechnen der Varianz
     (x1, x2, y1, y2) = autocrop_coords(masked_img)
     max_val = 0
     min_val = 256
@@ -52,7 +52,7 @@ def calc_histogram_range(img,mask,result_dictionary):
 
 def calc_grayvalue_variance(img,mask,result_dictionary):
   
-  #   maskiern des Bilds 
+  #   maskieren des Bildes 
     masked_img= maskimage(img,mask)
   
    
