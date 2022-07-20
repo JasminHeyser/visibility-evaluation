@@ -55,26 +55,42 @@ def variance_of_laplacian(img, mask ,result_dictionary):
 
  
     # Defining the laplacian kernel of size 3x3
-    kernel = np.array([
+    kernel_firstlap = np.array([
     [0, -1, 0],
     [-1, 4, -1],
     [0, -1, 0]
     ])
 
     #   apply Laplace Filter
-    filtered_image = cv2.filter2D(img, -1, kernel)
-    cv2.imshow("filtered img",filtered_image)
+    lap1_filtered_image = cv2.filter2D(img, -1, kernel_firstlap)
+    #cv2.imshow("filtered img",filtered_image)
     #   mask image
-    masked_img = maskimage(filtered_image,mask) 
-    cv2.imshow("masked filt img",masked_img)
-    var_results = calc_variance(masked_img,mask, anz_pix_mask)
+    masked_img = maskimage(lap1_filtered_image,mask) 
+    #cv2.imshow("masked filt img",masked_img)
+    var_lapfirst = calc_variance(masked_img,mask, anz_pix_mask)
+
+    kernel_secondlap = np.array([
+    [-1, -1, -1],
+    [-1, 8, -1],
+    [-1, -1, -1]
+    ])
+
+      #   apply Laplace Filter
+    lap2_filtered_image = cv2.filter2D(img, -1, kernel_secondlap)
+    #cv2.imshow("filtered img",filtered_image)
+    #   mask image
+    masked_img = maskimage(lap2_filtered_image,mask) 
+    #cv2.imshow("masked filt img",masked_img)
+    var_lap_diagonal = calc_variance(masked_img,mask, anz_pix_mask)
 
 
     result={}
-    result["var_results"] =var_results
+    result["var_lap_first_results"] =var_lapfirst
+    result["var_lap_diagonal_results"] =var_lap_diagonal
     result_dictionary["var_laplacian"] = result
+  
             
-    return var_results
+    return var_lapfirst,var_lap_diagonal
 
 
 

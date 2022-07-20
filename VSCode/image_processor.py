@@ -8,6 +8,8 @@ from helpers.maskimages import maskimage
 from pathlib import Path
 from helpers.rescale import rescaleimage
 from Var_LAP import variance_of_laplacian
+from Var_of_defect import variance_of_defect
+from Var_sobel import variance_of_sobel
 import sys 
 
 
@@ -90,32 +92,34 @@ def image_processor(image_path):
             #Ergebniss dictionary
             result_dictionary={}
 
-
-            # #   calculate Laplacian variance of the masked Image
-            variance_of_Laplace = variance_of_laplacian(img, nonbin_mask, result_dictionary)
-            print('Laplacian variance of the masked image'+name+':' ,variance_of_Laplace)
-        
-            # # #   calculate Laplacian variance of the masked Image
-            # # varlap = variance_of_laplacian(maskedimg)
-            # # print("Laplacian variance of the masked Image:",varlap)
-
-            # gray_var = calc_grayvalue_variance(img,nonbin_mask,result_dictionary)
-            # print('Gray value variance of the masked image'+name+':' ,gray_var)
+##hier können weitere Methoden einegfügt werden dazu sollte das Bild, die Maske und das result dictionary als Parameter weiter gegeben werden. Evetnuelle Randbehandlungen finden in der Methode selbst statt.
             
+            
+            # #   calculate Laplacian variance of the masked Image
+            var_lapfirst_results,var_lapdiagonal_results = variance_of_laplacian(img, nonbin_mask, result_dictionary)
+            print('first Laplacian variance of the masked image'+name+':' ,var_lapfirst_results)
+            print('Diagonal Laplacian variance of the masked image'+name+':' ,var_lapdiagonal_results)
+
+            # #   calculate  variance without filtering the image of the masked Image
+            variance_of_Defect_without_filter = variance_of_defect(img, nonbin_mask, result_dictionary)
+            print('variance of the masked image'+name+':' ,variance_of_Defect_without_filter)
+
+            # #   calculate sobel variance of the masked Image
+            variance_of_Sobel = variance_of_sobel(img, nonbin_mask, result_dictionary)
+            print('variance of the sobel filtered image'+name+':' ,variance_of_Sobel)
 
             # hist_range = calc_histogram_range(img,nonbin_mask,result_dictionary)
             # print('histogram_range of the masked image'+name+':' ,hist_range)
             
-                
-            # otsu_thresh = find_threshold_otsu(img, nonbin_mask)
-            # print ("otsu_thresh" , otsu_thresh)
 
 
+
+##Speichern der Werte in Ergebnisfiles
         #Writing to .json
-            os.makedirs(basepath+ "/VSCode/testjson_files/"+mask_subdir,exist_ok=True)
-            with open(basepath+ "/VSCode/testjson_files/"+mask_subdir +"/"+ Path(name).stem +".json", "w") as outfile:
+            os.makedirs(basepath+ "/VSCode/json_files/"+mask_subdir,exist_ok=True)
+            with open(basepath+ "/VSCode/json_files/"+mask_subdir +"/"+ Path(name).stem +".json", "w") as outfile:
                     json.dump(result_dictionary,outfile)
 
 if __name__ == "__main__":
     # main(sys.argv[1])
-    image_processor('C:/Users/jheys/Documents/01_BA/Bilddaten/SEP')
+    image_processor('C:/Users/jheys/Documents/01_BA/Bilddaten/AnnoBilder_IDC')

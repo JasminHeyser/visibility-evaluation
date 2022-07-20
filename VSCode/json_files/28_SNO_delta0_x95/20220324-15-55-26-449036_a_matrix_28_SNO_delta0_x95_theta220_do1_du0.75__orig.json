@@ -1,1 +1,1 @@
-{"var_laplacian": {"var_results": 0.16022646623085215}}
+{"var_laplacian": {"var_lap_first_results": 0.1602267883805995, "var_lap_diagonal_results": 0.8937304980970399}, "var_of_defect": {"var_results": 10.811345868281018}, "var_sobel": {"var_sobel_results": 8.494689263969336}}

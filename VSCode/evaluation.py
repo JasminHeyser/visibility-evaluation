@@ -10,10 +10,10 @@ import statistics
 from get_angle_range import get_angle_range
 
 #hier angeben von welchem Fehler die Ergebnisse geplottet werden sollen
-defect_key = "7_SEP_delta102_x100"
+defect_key = "0_SNO_delta51_x26"
 #hier angeben wo sich die ergebniss json files befinden
 result_json_files = ('C:/Users/jheys/Documents/01_BA/VSCode/json_files/')
-
+used_method="var_lap_first_results"
 
 
 # ---------------plot results------------------------------
@@ -22,11 +22,11 @@ def plot_results(result_json_files,defect_key):
   i = 0
   theta_with_do = []
   du_with_do = []
-  var_lap_with_do = []
+  var_with_do = []
 
   theta_without_do = []
   du_without_do = []
-  var_lap_without_do = []
+  var_without_do = []
 
   for root, dirs, files in os.walk(result_json_files + defect_key): 
       for name in files:    
@@ -51,31 +51,31 @@ def plot_results(result_json_files,defect_key):
                   if do == 1   :
                      theta_with_do.insert(i,theta)
                      du_with_do.insert(i,du)
-                     var_lap_with_do.insert(i,json_result_dict['var_laplacian']['var_results'])
+                     var_with_do.insert(i,json_result_dict['var_laplacian']['var_lap_first_results'])
                      i= i+1
 
                   else:
                      theta_without_do.insert(i,theta)
                      du_without_do.insert(i,du)
-                     var_lap_without_do.insert(i,json_result_dict['var_laplacian']['var_results'])
+                     var_without_do.insert(i,json_result_dict['var_laplacian']['var_lap_first_results'])
                      i= i+1
 
 
 #   print ("1st Input array : ", var_lap_with_do)
 #   print ("2nd Input array : ", var_lap_without_do)
       
-  dome_influence = np.subtract(var_lap_with_do, var_lap_without_do) 
+  dome_influence = np.subtract(var_with_do, var_without_do) 
   print ("domlight array: ", dome_influence)
 
        #--------------------Ergebnisse in 3DPlot anzeigen-------------------------
   fig = plt.figure(defect_key+"_3DPlot")
   ax = fig.add_subplot(111, projection='3d')
-  ax.scatter(theta_with_do, du_with_do, var_lap_with_do, marker="*", c="blue", label= "Dom=an, Dunkelfeld=an (steigend)")
-  ax.scatter(theta_without_do,du_without_do,var_lap_without_do, marker=".", c="red", label= "Dom=aus, Dunkelfeld=an (steigend)")
+  ax.scatter(theta_with_do, du_with_do, var_with_do, marker="*", c="blue", label= "Dom=an, Dunkelfeld=an (steigend)")
+  ax.scatter(theta_without_do,du_without_do,var_without_do, marker=".", c="red", label= "Dom=aus, Dunkelfeld=an (steigend)")
   ax.scatter(theta_without_do,du_without_do,dome_influence, marker="^", c="green", label= "Dom=an, Dunkelfeld=aus (errechnet)")
   ax.set_xlabel("Einfallswinkel")
   ax.set_ylabel("Intensität Dunkelfeldbeleuchtung")
-  ax.set_zlabel("Laplace Varianz") 
+  ax.set_zlabel("Varianz") 
   ax.legend()
   ax.set_title(defect_key)
   plt.show()
@@ -83,15 +83,15 @@ def plot_results(result_json_files,defect_key):
    #--------------------Ergebnisse in 2DPlot anzeigen-------------------------
    # plotting points as a scatter plot
   fig = plt.figure(defect_key+"_2DPlot")
-  plt.scatter(du_with_do, var_lap_with_do,label= 'Dom=an, Dunkelfeld=an (steigend)', color= "blue",
+  plt.scatter(du_with_do, var_with_do,label= 'Dom=an, Dunkelfeld=an (steigend)', color= "blue",
                marker= "*", s=30)
-  plt.scatter(du_without_do, var_lap_without_do ,label= 'Dom=aus, Dunkelfeld=an (steigend)', color= "red",
+  plt.scatter(du_without_do, var_without_do ,label= 'Dom=aus, Dunkelfeld=an (steigend)', color= "red",
                marker= ".", s=30)
   plt.scatter(du_without_do,dome_influence, marker="^", c="green", label= "Dom=an, Dunkelfeld=aus (errechnet)")
    # x-axis label
   plt.xlabel('Intensität Dunkelfeldbeleuchtung')
    # frequency label
-  plt.ylabel('Laplace Varianz')
+  plt.ylabel('Varianz')
    # plot title
   plt.title(defect_key)
    # showing legend
